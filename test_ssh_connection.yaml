@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Ansible ping - try to connect to host
+      ping:
+      register: pong
+
+    - name: Print ping result
+      debug:
+        msg: "{{ pong }}"
