@@ -8,5 +8,4 @@
       register: linuxdf
 
     - name: Print disk usage
-      debug:
-        msg: "System {{ inventory_hostname }} disk usage {{ linuxdf.stdout_lines }}"
+      debug: var=linuxdf.stdout_lines
