@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: no
+  
+  tasks:
+    - name: Check disk usage
+      shell: df -h / | awk ' { print $5} ' | grep -v Use
+      register: linuxdf
+
+    - name: Print disk usage
+      debug:
+        msg: "System {{ inventory_hostname }}'s disk usage {{ linuxdf.stdout }}'"
