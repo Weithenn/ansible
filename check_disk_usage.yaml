@@ -9,4 +9,4 @@
 
     - name: Print disk usage
       debug:
-        msg: "System {{ inventory_hostname }}'s disk usage {{ linuxdf.stdout }}'"
+        msg: "System {{ inventory_hostname }}'s disk usage {{ linuxdf.stdout }}"
