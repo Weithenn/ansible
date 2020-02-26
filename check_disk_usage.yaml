@@ -4,7 +4,7 @@
   
   tasks:
     - name: Check disk usage
-      shell: df -h / | awk ' { print $5} ' | grep -v Use
+      shell: df -h | awk '{ print "Disk Usage:"" " $1 " " $3"/"$2" ""("$5")"}'
       register: linuxdf
 
     - name: Print disk usage
