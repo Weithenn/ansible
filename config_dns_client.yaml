@@ -1,0 +1,22 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:  
+  - name: Config DNS client using Weithenn DNS server from template
+    copy:
+      src: resolv.conf
+      dest: /etc/resolv.conf
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+    notify:
+      - Ensure resolv.conf is immutable
+  
+  handlers:
+  - name: Ensure resolv.conf is immutable
+    file:
+      path: /etc/resolv.conf
+      attr: +i
