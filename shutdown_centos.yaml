@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Shutdown CentOS 7 host
+      shell: sleep 10 && /usr/bin/systemctl --no-wall poweroff
+      async: 300
+      poll: 0
