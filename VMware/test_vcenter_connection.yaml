@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    vmware:
+      host: '{{ lookup("env", "VMWARE_HOST") }}'
+      username: '{{ lookup("env", "VMWARE_USER") }}'
+      password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+
+  tasks:
+    - debug:
+        var: vmware
