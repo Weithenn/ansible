@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:  
+  - name: Config system wide proxy from template
+    copy:
+      src: environment
+      dest: /etc/environment
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+    notify:
+      - Apply proxy setting without restart host
+
+  - name: Config YUM using Weithenn proxy server
+    ini_file:
+      path: /etc/yum.conf
+      section: main
+      option: proxy
+      value: http://proxy.weithenn.org:3128
+      backup: yes
+
+  handlers:
+  - name: Apply proxy setting without restart host
+    shell: source /etc/environment
