@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Use IPMI to Power On the host
+      ipmi_power:
+        name: "{{ inventory_hostname }}"
+        user: "{{ Supermicro_username }}"
+        password: "{{ Supermicro_password }}"
+        state: 'on'
