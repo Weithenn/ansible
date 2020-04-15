@@ -1,0 +1,45 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  
+  tasks:
+  - name: Set timezone to Asia/Taipei and use RTC in UTC by calling
+    timezone:
+      name: Asia/Taipei
+      hwclock: UTC
+    notify: restart crond
+
+  - name: Stop and disable ntpd service
+    service:
+      name: ntpd
+      enabled: no
+      state: stopped
+
+  - name: Make sure chrony package installed
+    yum:
+      name: chrony
+      state: installed
+
+  - name: Config NTP Client using template
+    copy:
+      src: chrony.conf
+      dest: /etc/chrony.conf
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+    notify: restart chrony
+  
+  handlers:
+  - name: restart crond
+    service:
+      name: crond
+      enabled: yes
+      state: restarted
+
+  - name: restart chrony
+    service:
+      name: chronyd
+      enabled: yes
+      state: restarted
