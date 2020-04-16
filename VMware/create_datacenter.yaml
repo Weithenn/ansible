@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Create vSphere datacenter
+      vmware_datacenter:
+        validate_certs: no
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter_name: 'IT-Datacenter'
+        state: present
+      register: datacenter_result
+
+    - name: Print create vSphere datacenter result
+      debug:
+        var: datacenter_result
