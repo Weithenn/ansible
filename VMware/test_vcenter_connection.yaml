@@ -10,4 +10,7 @@
 
   tasks:
     - debug:
-        var: vmware
+        msg:
+          - "{{ vmware.host}}"
+          - "{{ vmware.username}}"
+          - "{{ vmware.password}}"
