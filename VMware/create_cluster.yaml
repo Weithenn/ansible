@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    datacenter: 'IT-Datacenter'
+    cluster: 'IT-Cluster'
+
+  tasks:
+    - name: Create vSphere cluster
+      vmware_cluster:
+        validate_certs: no
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter_name: "{{ datacenter }}"
+        cluster_name: "{{ cluster }}"
+        enable_ha: no
+        enable_drs: no
+        enable_vsan: no
+        state: present
+      register: cluster_result
+
+    - name: Print create vSphere cluster result
+      debug:
+        var: cluster_result
