@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    datacenter: 'IT-Datacenter'
+    cluster: 'IT-Cluster'
+
+  tasks:
+    - name: Add vSphere ESXi to cluster
+      vmware_host:
+        validate_certs: no
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter_name: "{{ datacenter }}"
+        cluster_name: "{{ cluster }}"
+        esxi_hostname: "{{ ESXi_hostname }}"
+        esxi_username: "{{ ESXi_username }}"
+        esxi_password: "{{ ESXi_password }}"
+        state: present
+      register: host_result
+
+    - name: Print add vSphere esxi to cluster result
+      debug:
+        var: host_result
