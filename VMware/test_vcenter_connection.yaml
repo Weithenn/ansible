@@ -6,5 +6,4 @@
   tasks:
     - debug:
         msg:
-          - "{{ VMWARE_HOST }}"
           - '{{ lookup("env", "VMWARE_HOST") }}'
