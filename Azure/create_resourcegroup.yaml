@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Create Azure Resource Group in US East Datacenter
+      azure_rm_resourcegroup:
+        name: RG-USEast
+        location: eastus
+      register: result
+    - debug:
+        var: result
