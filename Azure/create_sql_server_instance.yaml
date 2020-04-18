@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    resource_group: 'RG-USEast12'
+    datacenter: 'eastus'
+    sqlserver_name: 'ansiblesql12'
+    sqldb_name: 'sqldb'
+    username: 'weithenn'
+    password: 'SqlServer@12'
+
+  tasks:
+    - name: Create a Resource Group
+      azure_rm_resourcegroup:
+        name: "{{ resource_group }}"
+        location: "{{ datacenter }}"
+
+    - name: Create SQL Server
+      azure_rm_sqlserver:
+        name: "{{ sqlserver_name }}"
+        resource_group: "{{ resource_group }}"
+        version: 12.0
+        admin_username: "{{ username }}"
+        admin_password: "{{ password }}"
+
+    - name: Create instance of SQL Database
+      azure_rm_sqldatabase:
+        resource_group: "{{ resource_group }}"
+        server_name: "{{ sqlserver_name }}"
+        name: "{{ sqldb_name}}"
