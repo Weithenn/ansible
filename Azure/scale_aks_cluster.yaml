@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDenEg8gzJKjorHvH1CtlF0zv
+    resource_group: 'RG-USEast-AKS1167'
+    datacenter: 'eastus'
+    aks_name: 'ansibleaks1167'
+    username: 'weithenn'
+    client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+    client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+    aks_version: '1.16.7'
+
+  tasks:
+  - name: Scale created AKS(Azure Kubernetes Service) Cluster
+    azure_rm_aks:
+      name: "{{ aks_name }}"
+      location: "{{ datacenter }}"
+      resource_group: "{{ resource_group }}"
+      dns_prefix: "{{ aks_name }}"
+      kubernetes_version: "{{ aks_version }}"
+      linux_profile:
+        admin_username: "{{ username }}"
+        ssh_key: "{{ ssh_key }}"
+      service_principal:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+      agent_pool_profiles:
+        - name: default
+          count: 5
+          vm_size: Standard_D2_v2
