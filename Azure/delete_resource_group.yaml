@@ -1,0 +1,10 @@
+- hosts: localhost
+  connection: local
+  vars:
+    resource_group: 'RG-USEast-AKS1167'
+  tasks:
+    - name: Delete a Resource Group
+      azure_rm_resourcegroup:
+        name: "{{ resource_group }}"
+        force_delete_nonempty: yes
+        state: absent
