@@ -5,10 +5,10 @@
   vars:
     datacenter: 'IT-Datacenter'
     cluster: 'IT-Cluster'
-    folder-name: 'Windows-VMs'
-    vm-name: 'WS2019'
-    template-name: 'WS2019-Template'
-    portgroup-name: 'VM Network'
+    folder_name: 'Windows-VMs'
+    vm_name: 'WS2019'
+    template_name: 'WS2019-Template'
+    portgroup_name: 'VM Network'
 
   tasks:
     - name: Clone a VM from template
@@ -19,12 +19,12 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter_name: "{{ datacenter }}"
         cluster_name: "{{ cluster }}"
-        folder: "{{ folder-name }}"
-        name: "{{ vm-name }}"
-        template: "{{ template-name }}"
+        folder: "{{ folder_name }}"
+        name: "{{ vm_name }}"
+        template: "{{ template_name }}"
         state: poweredon
       networks:
-        - name: "{{ portgroup-name }}"
+        - name: "{{ portgroup_name }}"
       wait_for_ip_address: yes
       register: deploy_vm
 
