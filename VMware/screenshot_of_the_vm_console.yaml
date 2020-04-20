@@ -7,7 +7,7 @@
     cluster: 'IT-Cluster'
     folder_name: 'Windows-VMs'
     vm_name: 'WS2019'
-    screenshot_path: '/tmp/'
+    screenshot_path: '/tmp/WS2019.png'
 
   tasks:
     - name: Create a screenshot of the VM console
