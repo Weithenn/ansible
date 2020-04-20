@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    datacenter: 'IT-Datacenter'
+    cluster: 'IT-Cluster'
+    folder_name: 'Windows-VMs'
+    vm_name: 'WS2019'
+    screenshot_path: '/tmp/'
+
+  tasks:
+    - name: Create a screenshot of the VM console
+      vmware_guest_screenshot:
+        validate_certs: no
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
+        folder: "{{ folder_name }}"
+        name: "{{ vm_name }}"
+        local_path: "{{ screenshot_path }}"
+      register: screenshot_vm
+
+    - name: Print create a screenshot vm console result
+      debug:
+        var: screenshot_vm
