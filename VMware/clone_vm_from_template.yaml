@@ -17,8 +17,8 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter_name: "{{ datacenter }}"
-        cluster_name: "{{ cluster }}"
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
         folder: "{{ folder_name }}"
         name: "{{ vm_name }}"
         template: "{{ template_name }}"
