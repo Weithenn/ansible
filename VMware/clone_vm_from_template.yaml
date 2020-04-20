@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    datacenter: 'IT-Datacenter'
+    cluster: 'IT-Cluster'
+    folder-name: 'Windows-VMs'
+    vm-name: 'WS2019'
+    template-name: 'WS2019-Template'
+    portgroup-name: 'VM Network'
+
+  tasks:
+    - name: Clone a VM from template
+      vmware_guest:
+        validate_certs: no
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter_name: "{{ datacenter }}"
+        cluster_name: "{{ cluster }}"
+        folder: "{{ folder-name }}"
+        name: "{{ vm-name }}"
+        template: "{{ template-name }}"
+        state: poweredon
+      networks:
+        - name: "{{ portgroup-name }}"
+      wait_for_ip_address: yes
+      register: deploy_vm
+
+    - name: Print deploy vm result
+      debug:
+        var: deploy_vm
