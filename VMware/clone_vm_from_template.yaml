@@ -23,9 +23,9 @@
         name: "{{ vm_name }}"
         template: "{{ template_name }}"
         state: poweredon
-      networks:
-        - name: "{{ portgroup_name }}"
-      wait_for_ip_address: yes
+        networks:
+          - name: "{{ portgroup_name }}"
+        wait_for_ip_address: yes
       register: deploy_vm
 
     - name: Print deploy vm result
