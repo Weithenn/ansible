@@ -26,3 +26,15 @@
     - name: Print create a screenshot vm console result
       debug:
         var: screenshot_vm
+
+    - name: Sending an e-mail using Gmail SMTP servers
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: weithenn.test@gmail.com
+        password: '7ujm@WSX6yhn'
+        to: Weithenn Wang <weithenn@weithenn.org>
+        subject: Ansible - Screenshot VM Console
+        body: System {{ vm_name }} has been successfully create screenshot.
+        attach:
+          - "{{ screenshot_path }}"
