@@ -34,6 +34,7 @@
         to: Weithenn Wang <weithenn@weithenn.org>
         subject: Take a screenshot of the virtual machine console
         body: System {{ vm_name }} has been successfully screenshoted.
+        attach: "/tmp/WS2019.png"
       register: sending_email
 
     - name: Print sending an e-mail result
