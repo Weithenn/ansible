@@ -24,3 +24,18 @@
     - name: Print take a screenshot result
       debug:
         var: take_screenshot
+    
+    - name: Sending an e-mail using Gmail SMTP servers
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ Gmail_address }}"
+        password: "{{ Gmail_password}}"
+        to: Weithenn Wang <weithenn@weithenn.org>
+        subject: Take a screenshot of the virtual machine console
+        body: System {{ vm_name }} has been successfully screenshoted.
+      register: sending_email
+
+    - name: Print sending an e-mail result
+      debug:
+        var: sending_email
