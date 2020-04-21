@@ -31,10 +31,13 @@
       mail:
         host: smtp.gmail.com
         port: 587
-        username: weithenn.test@gmail.com
-        password: '7ujm@WSX6yhn'
+        username: "{{ Gmail_address}}"
+        password: "{{ Gmail_password}}"
         to: Weithenn Wang <weithenn@weithenn.org>
         subject: Ansible - Screenshot VM Console
         body: System {{ vm_name }} has been successfully create screenshot.
-        attach:
-          - "{{ screenshot_path }}"
+        register: sending_email
+
+    - name: Print sending an e-mail result
+      debug:
+        var: sending_email
