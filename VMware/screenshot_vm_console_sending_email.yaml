@@ -7,6 +7,7 @@
     cluster: 'IT-Cluster'
     folder_name: 'Windows-VMs'
     vm_name: 'WS2019'
+    screenshot_path: '/tmp/WS2019.png'
 
   tasks:
     - name: Take a screenshot of the virtual machine console
@@ -18,10 +19,10 @@
         datacenter: "{{ datacenter }}"
         folder: "{{ folder_name }}"
         name: "{{ vm_name }}"
-        local_path: "/tmp/WS2019.png"
+        local_path: "{{ screenshot_path }}"
       register: take_screenshot
 
-    - name: Print take a screenshot result
+    - name: Print take a screenshot of the virtual machine console result
       debug:
         var: take_screenshot
     
@@ -32,9 +33,9 @@
         username: "{{ Gmail_address }}"
         password: "{{ Gmail_password}}"
         to: Weithenn Wang <weithenn@weithenn.org>
-        subject: Take a screenshot of the virtual machine console
-        body: System {{ vm_name }} has been successfully screenshoted.
-        attach: "/tmp/WS2019.png"
+        subject: Take a screenshot of the "{{ vm_name }}" virtual machine console
+        body: System "{{ vm_name }}" has been successfully screenshotted.
+        attach: "{{ screenshot_path }}"
       register: sending_email
 
     - name: Print sending an e-mail result
