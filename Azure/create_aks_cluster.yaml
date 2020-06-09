@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDenEg8gzJKjorHvH1CtlF0zv
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIljV56YleLnnoLkMFUAD9RZCTavoU8csnpLJxlMPwHPT8mznSVjkZL+P/Cmxc1GH9jpEgtlDbARDitdI9gbWiZvYJlwoUYLVt0y0cX2J3KITo04w8+5j4N/xg6pxfRgZewwCvgU5PEqpBQO0m/TFV/zKSw4P7/21yB51/dTZrw74epBSd6C7WAwySa1KV849Gu7rgXHugHuShXSuVJUY8xhopEM3leQgjV3b32Kri2mzRmRNNfkL03jwgZKiFy62JwLkC1k2k+EGdjbp6E5NIgQRPSVt0nA4EHmhA/3yTD54TtD4BLIiHjMRBcanFyfYARrJ2nzsO0ncPng28JA2j weithenn@cc-67d99671-7dcf6f7775-879rx
     resource_group: 'RG-USEast-AKS1169'
     datacenter: 'eastus'
     aks_name: 'ansibleaks1169'
