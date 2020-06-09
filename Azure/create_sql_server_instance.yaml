@@ -19,7 +19,7 @@
       azure_rm_sqlserver:
         name: "{{ sqlserver_name }}"
         resource_group: "{{ resource_group }}"
-        version: 12.0
+        version: '12.0'
         admin_username: "{{ username }}"
         admin_password: "{{ password }}"
 
