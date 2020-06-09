@@ -9,7 +9,7 @@
     username: 'weithenn'
     client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
     client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
-    aks_version: '1.16.7'
+    aks_version: '1.16.9'
 
   tasks:
   - name: Create a Resource Group
