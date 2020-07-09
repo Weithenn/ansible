@@ -1,19 +1,34 @@
+# =======================================================================
+# Version:          v1 - July 9,2020
+# Author:           Weithenn Wang (weithenn at weithenn.org)
+# Lab Environment:  Ansible AWX 13.0.0
+#                   vCenter Server 6.7 U3, vCenter Server 7.0
+# description:      Create vSphere Datacenters
+# =======================================================================
+
 ---
 - hosts: localhost
   gather_facts: no
   connection: local
+  vars:
+    vcenter:
+      host: '{{ lookup("env", "VMWARE_HOST") }}'
+      username: '{{ lookup("env", "VMWARE_USER") }}'
+      password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+      certificate: '{{ lookup("env", "VMWARE_VALIDATE_CERTS") }}'
+    datacenter: 'Datacenter'
 
   tasks:
-    - name: Create vSphere datacenter
+    - name: Create vSphere Datacenters
       vmware_datacenter:
         validate_certs: no
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter_name: 'IT-Datacenter'
+        hostname: '{{ vcenter.host }}'
+        username: '{{ vcenter.username }}'
+        password: '{{ vcenter.password }}'
+        datacenter_name: "{{ datacenter }}"
         state: present
-      register: datacenter_result
+      register: datacenter_create_result
 
-    - name: Print create vSphere datacenter result
+    - name: Print vSphere datacenter create result
       debug:
-        var: datacenter_result
+        var: datacenter_create_result
