@@ -1,0 +1,30 @@
+# =======================================================================
+# Version:          v1 - July 9,2020
+# Author:           Weithenn Wang (weithenn at weithenn.org)
+# Lab Environment:  Ansible AWX 13.0.0
+#                   vSphere ESXi 6.7 Update 3
+# description:      Test ESXi connection and get information
+# =======================================================================
+
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    esxi:
+      host: '{{ ESXi_HOST }}'
+      username: '{{ ESXi_USER }}'
+      password: '{{ ESXi_PASSWORD }}'
+
+  tasks:
+    - name: Get ESXi information
+      vmware_about_info:
+        validate_certs: no
+        hostname: '{{ esxi.host }}'
+        username: '{{ esxi.username }}'
+        password: '{{ esxi.password }}'
+      register: esxi_info
+
+    - name: Print ESXi information
+      debug:
+        var: esxi_info
