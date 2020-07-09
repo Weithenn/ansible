@@ -2,7 +2,7 @@
 # Version:          v1 - July 9,2020
 # Author:           Weithenn Wang (weithenn at weithenn.org)
 # Lab Environment:  Ansible AWX 13.0.0
-#                   vCenter Server 6.7 Update 3
+#                   vCenter Server 6.7 U3, vCenter Server 7
 # description:      Test vCenter Server connection and get information
 # =======================================================================
 
