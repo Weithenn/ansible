@@ -1,0 +1,31 @@
+# =======================================================================
+# Version:          v1 - July 9,2020
+# Author:           Weithenn Wang (weithenn at weithenn.org)
+# Lab Environment:  Ansible AWX 13.0.0
+#                   vCenter Server 6.7 Update 3
+# description:      Test vCenter Server connection and get information
+# =======================================================================
+
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    vcenter:
+      host: '{{ lookup("env", "VMWARE_HOST") }}'
+      username: '{{ lookup("env", "VMWARE_USER") }}'
+      password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+      certificate: '{{ lookup("env", "VMWARE_VALIDATE_CERTS") }}'
+
+  tasks:
+    - name: Get vCenter Server information
+      vmware_about_info:
+        validate_certs: no
+        hostname: "{{ vcenter.host }}"
+        username: "{{ vcenter.username }}"
+        password: "{{ vcenter.password }}"
+      register: vcenter_info
+
+    - name: Print vCenter Server information
+      debug:
+        var: vcenter_info
