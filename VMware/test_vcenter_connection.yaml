@@ -21,9 +21,9 @@
     - name: Get vCenter Server information
       vmware_about_info:
         validate_certs: no
-        hostname: "{{ vcenter.host }}"
-        username: "{{ vcenter.username }}"
-        password: "{{ vcenter.password }}"
+        hostname: '{{ vcenter.host }}'
+        username: '{{ vcenter.username }}'
+        password: '{{ vcenter.password }}'
       register: vcenter_info
 
     - name: Print vCenter Server information
