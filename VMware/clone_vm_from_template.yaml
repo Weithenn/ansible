@@ -1,10 +1,18 @@
+# =======================================================================
+# Version:          v1 - September 7,2020
+# Author:           Weithenn Wang (weithenn at weithenn.org)
+# Lab Environment:  Ansible AWX 14.1.0
+#                   vCenter Server 7.0
+# description:      Clone VM from template
+# =======================================================================
+
 ---
 - hosts: localhost
   gather_facts: no
   connection: local
   vars:
-    datacenter: 'IT-Datacenter'
-    cluster: 'IT-Cluster'
+    datacenter: 'Datacenter'
+    cluster: 'Cluster'
     folder_name: 'Windows-VMs'
     vm_name: 'WS2019'
     template_name: 'WS2019-Template'
