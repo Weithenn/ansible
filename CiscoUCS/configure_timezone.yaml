@@ -1,0 +1,37 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 23, 2021
+# Description:  Configure Cisco UCS CIMC timezone to Taipei
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+
+  tasks:
+    - name: Configure Cisco UCS server CIMC timezone to Asia/Taipei
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          scope cimc
+          timezone-select
+          5
+          43
+          1
+          y
+          EOL
+
+    - name: Configure Cisco UCS server CIMC timezone to Asia/Taipei
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          show cimc detail
+          EOL
+      register: check_timezone
+
+    - name: Print Cisco UCS server CIMC timezone
+      debug:
+        msg: "{{ inventory_hostname }} is {{ check_timezone.stdout_lines[5] | replace('    ', '') }}"
