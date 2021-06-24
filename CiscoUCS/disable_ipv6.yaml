@@ -1,0 +1,40 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 24, 2021
+# Description:  Disable Cisco UCS CIMC IPv6 networking
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+
+  tasks:
+    - name: Disable Cisco UCS CIMC IPv6 networking
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          scope cimc
+          scope network
+          set v6-enabled no
+          commit
+          y
+          EOL
+
+    - name: Pause for 30 seconds to CIMC commit
+      pause:
+        seconds: 30
+
+    - name: Check Cisco UCS CIMC disabled IPv6
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          show cimc/network detail
+          EOL
+      register: check_ipv6_status
+
+    - name: Print Cisco UCS CIMC IPv6 status
+      debug:
+        msg: "{{ inventory_hostname }} is {{ check_ipv6_status.stdout_lines[12] | replace('    ', '') }}"
