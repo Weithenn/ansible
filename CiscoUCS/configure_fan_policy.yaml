@@ -1,0 +1,38 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 25, 2021
+# Description:  Configure Cisco UCS CIMC fan policy to High-Power
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+
+  tasks:
+    - name: Configure Cisco UCS CIMC fan policy to High-Power
+      shell: |
+          sshpass -p {{ cimc.password }} ssh -T -o StrictHostKeyChecking=no {{ cimc.username }}@{{ inventory_hostname }} << EOL
+          scope chassis/fan-policy
+          set fan-policy high-power
+          commit
+          EOL
+
+    - name: Pause for 30 seconds to CIMC commit
+      pause:
+        seconds: 30
+
+    - name: Check Cisco UCS CIMC fan policy status
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          show chassis/fan-policy detail
+          EOL
+      register: check_fan_policy
+
+    - name: Print Cisco UCS CIMC fan policy status
+      debug:
+        msg: "{{ inventory_hostname }} is {{ check_fan_policy.stdout_lines[2] | replace('    ', '') }}"
