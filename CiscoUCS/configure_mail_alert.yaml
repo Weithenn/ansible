@@ -1,0 +1,54 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 28, 2021
+# Description:  Configure Cisco UCS CIMC Mail Alert
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+    mail:
+      relay: 'relay.weithenn.org'
+      recipient: 'VM_ADMINS@weithenn.org'
+
+  tasks:
+    - name: Configure Cisco UCS CIMC mail alert
+      shell: |
+          sshpass -p {{ cimc.password }} ssh -T -o StrictHostKeyChecking=no {{ cimc.username }}@{{ inventory_hostname }} << EOL
+          scope smtp
+          set enabled yes
+          set server-addr {{ mail.relay }}
+          set from-addr {{ inventory_hostname }}@weithenn.org
+          commit
+          set-mail-addr recipient1 {{ mail.recipient }}
+          y
+          EOL
+
+    - name: Pause for 30 seconds to CIMC commit
+      pause:
+        seconds: 30
+
+    - name: Send test mail
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          scope smtp
+          send-test-mail recipient1
+          EOL
+
+    - name: Check Cisco UCS CIMC fan policy status
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          show smtp detail
+          EOL
+      register: check_smtp
+
+    - name: Print Cisco UCS CIMC SMTP server status
+      debug:
+        msg:
+          - "{{ inventory_hostname }}"
+          - "{{ check_smtp.stdout_lines }}"
