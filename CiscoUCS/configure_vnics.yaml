@@ -1,0 +1,74 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 29, 2021
+# Description:  Configure Cisco UCS CIMC vNICs properties (for eth0 / eth1)
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+
+  tasks:
+    - name: Configure Cisco UCS CIMC vNICs properties (for eth0 / eth1)
+      shell: |
+          sshpass -p {{ cimc.password }} ssh -T -o StrictHostKeyChecking=no {{ cimc.username }}@{{ inventory_hostname }} << EOL
+          scope chassis
+          scope adapter MLOM
+          scope host-eth-if eth0
+          scope interrupt
+          set interrupt-count 32
+          exit
+          scope recv-queue
+          set rq-ring-size 4096
+          exit
+          scope trans-queue
+          set wq-ring-size 4096
+          exit
+          scope comp-queue
+          set cq-count 16
+          top
+          scope chassis
+          scope adapter MLOM
+          scope host-eth-if eth1
+          scope interrupt
+          set interrupt-count 32
+          exit
+          scope recv-queue
+          set rq-ring-size 4096
+          exit
+          scope trans-queue
+          set wq-ring-size 4096
+          exit
+          scope comp-queue
+          set cq-count 16
+          exit
+          commit
+          EOL
+
+    - name: Pause for 30 seconds to CIMC commit
+      pause:
+        seconds: 30
+
+    - name: Check Cisco UCS CIMC vNICs status
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          scope chassis
+          scope adapter MLOM
+          scope host-eth-if eth0
+          show interrupt detail
+          show recv-queue detail
+          show trans-queue detail
+          show comp-queue detail
+          EOL
+      register: check_vnics
+
+    - name: Print Cisco UCS CIMC vNICs status
+      debug:
+        msg:
+          - "{{ inventory_hostname }}"
+          - "{{ check_vnics.stdout_lines }}"
