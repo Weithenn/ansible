@@ -1,0 +1,60 @@
+# ==================================================================
+# Author:       Weithenn Wang (weithenn at weithenn.org)
+# Version:      v0.1 - June 30, 2021
+# Description:  Configure Cisco UCS CIMC NTP
+# ==================================================================
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cimc:
+      username: '{{ CiscoUCS_username }}'
+      password: '{{ CiscoUCS_password }}'
+    ucsurl: '/redfish/v1/Managers/CIMC/NetworkProtocol'
+
+  tasks:
+    - name: Enable NTP service by RESTful API
+      uri:
+        url: https://{{ inventory_hostname }}.weithenn.org{{ ucsurl }}
+        method: PATCH
+        user: "{{ CiscoUCS_username }}"
+        password: "{{ CiscoUCS_password }}"
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          NTP:
+            ProtocolEnabled: true
+        force_basic_auth: yes
+        validate_certs: no
+        return_content: yes
+      register: enable_ntp_result
+
+    - name: Configure Cisco UCS CIMC NTP server to 10.10.75.15 and 10.10.75.16
+      shell: |
+          sshpass -p {{ cimc.password }} ssh -T -o StrictHostKeyChecking=no {{ cimc.username }}@{{ inventory_hostname }} << EOL
+          scope cimc/network/ntp
+          set server-1 10.10.75.15
+          set server-2 10.10.75.16
+          commit
+          EOL
+
+    - name: Pause for 30 seconds to CIMC commit
+      pause:
+        seconds: 30
+
+    - name: Check Cisco UCS CIMC NTP server status
+      shell: |
+          sshpass -p "{{ cimc.password }}" ssh -T -o StrictHostKeyChecking=no {{ cimc.username}}@"{{ inventory_hostname }}" << EOL
+          scope cimc/network/ntp
+          show detail
+          EOL
+      register: check_ntp_server
+
+    - name: Print Cisco UCS CIMC NTP server status
+      debug:
+        msg:
+          - "{{ inventory_hostname }}"
+          - "{{ check_ntp_server.stdout_lines }}"
