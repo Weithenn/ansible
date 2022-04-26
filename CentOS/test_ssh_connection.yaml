@@ -2,7 +2,7 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: Ansible ping - try to connect to host
+    - name: Ansible ping - try to connect to host - Gitops test
       ping:
       register: pong
 
