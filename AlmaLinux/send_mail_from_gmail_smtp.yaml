@@ -1,5 +1,5 @@
 # =======================================================================
-# Version:          v1 - September 7,2020
+# Version:          v0.1 - September 16, 2023
 # Author:           Weithenn Wang (weithenn at weithenn.org)
 # Lab Environment:  Ansible AWX 17.1.0
 # description:      Send mail from Gmail SMTP
@@ -10,23 +10,18 @@
   gather_facts: no
   connection: local
   vars:
-    datacenter: 'Datacenter'
-    cluster: 'Cluster'
-    folder_name: 'Windows-VMs'
-    vm_name: 'WS2019'
-    screenshot_path: '/tmp/WS2019.png'
+    Gmail_SMTP: 'smtp.gmail.com'
 
-  tasks:    
+  tasks:
     - name: Sending an e-mail using Gmail SMTP servers
       mail:
-        host: smtp.gmail.com
+        host: "{{ Gmail_SMTP }}"
         port: 587
-        username: "{{ Gmail_address }}"
+        username: "{{ Gmail_username }}"
         password: "{{ Gmail_password}}"
-        to: Weithenn Wang <weithenn@weithenn.org>
-        subject: Take a screenshot of the "{{ vm_name }}" virtual machine console
-        body: System "{{ vm_name }}" has been successfully screenshotted.
-        attach: "{{ screenshot_path }}"
+        to: "{{ Gmail_adddress }}"
+        subject: Can't not SSH to "{{ inventory_hostname }}"
+        body: Can't not SSH to "{{ inventory_hostname }}"
       register: sending_email
 
     - name: Print sending an e-mail result
