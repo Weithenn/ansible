@@ -14,7 +14,7 @@
       smtp_server: "smtp.gmail.com"
       username: "{{ Gmail_username }}"
       password: "{{ Gmail_password}}"
-      address: "{{ Gmail_adddress }}"
+      address: "{{ Gmail_address }}"
 
   tasks:
     - name: Sending an e-mail using Gmail SMTP servers
