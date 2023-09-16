@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+    - name: check disk space
+      shell: |
+        df -h
+      register: disk_info
+
+    - name: print disk space info
+      debug:
+        msg: >
+          {{ disk_info.stdout }}
