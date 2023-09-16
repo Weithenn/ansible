@@ -9,4 +9,4 @@
     - name: print disk space info
       debug:
         msg: >
-          {{ disk_info.stdout }}
+          {{ disk_info.stdout_lines }}
