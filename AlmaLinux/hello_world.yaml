@@ -1,0 +1,6 @@
+- name: Hello GitOps Workshop
+  hosts: all
+  tasks:
+    - name: Hello Message
+      debug:
+        msg: "Hello DevOpsDays Taipei 2023 GitOps Workshop!"
