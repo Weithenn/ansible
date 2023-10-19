@@ -3,4 +3,4 @@
   tasks:
     - name: Hello Message
       debug:
-        msg: "Hello DevOpsDays Taipei 2023 GitOps Workshop!"
+        msg: "Hello DevOpsDays Taipei 2023 GitOps Workshop!!"
