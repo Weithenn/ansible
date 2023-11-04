@@ -58,9 +58,15 @@
         done
       register: webversion_result
 
+    # - name: Print webversion result
+    #   debug:
+    #     var: webversion_result.stdout_lines
+
     - name: Print webversion result
       debug:
-        var: webversion_result.stdout_lines
+        msg: " { { item.stdout_lines }}"
+      with_items: " { { webversion_result }}"
+      verbosity: 2
 
   handlers:
     - name: Restart Nginx container
