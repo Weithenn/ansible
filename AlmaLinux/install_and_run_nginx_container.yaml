@@ -6,8 +6,6 @@
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
-    # nginx_html_volume: nginx-html
-    # nginx_html_path: /usr/share/nginx/html
     nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
     nginx_src_file: ab_testing_split_client.conf
@@ -24,7 +22,6 @@
         name: "{{ item }}"
         driver: local
       with_items:
-        # - "{{ nginx_html_volume }}"
         - "{{ nginx_conf_volume }}"
 
     - name: Ensure Nginx container is running
@@ -35,7 +32,6 @@
         ports:
           - "8888:80"
         volumes:
-          # - "{{ nginx_html_volume }}:{{ nginx_html_path }}:ro"
           - "{{ nginx_conf_volume }}:{{ nginx_conf_path }}:ro"
 
     - name: Configure Nginx AB testing percentage
@@ -49,23 +45,6 @@
         regexp: '100%'
         replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
-
-    # - name: Wait for service to be ready
-    #   wait_for:
-    #     timeout: 60
-
-    # - name: Testing the split_clients Configuration
-    #   shell: |
-    #     for x in {1..20}; 
-    #     do
-    #       curl 127.0.0.1:8888?token=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1); 
-    #     done
-    #   register: webversion_result
-
-    # - name: Print webversion result
-    #   debug:
-    #     var: webversion_result.stdout_lines
-    #     verbosity: 2
 
   handlers:
     - name: Restart Nginx container
