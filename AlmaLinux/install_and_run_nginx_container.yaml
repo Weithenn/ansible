@@ -1,16 +1,14 @@
 ---
-- name: Configure nginx container volume and AB Testing
+- name: Configure Nginx container and AB Testing
   hosts: all
   gather_facts: no
   become: yes
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
-    nginx_volume_html: nginx-html
-    nginx_volume_conf: nginx-conf
+    nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
     nginx_conf_file: /etc/nginx/nginx.conf
-    nginx_html_path: /usr/share/nginx/html
     nginx_ab_test_percentage: 80
 
   tasks:
@@ -24,8 +22,7 @@
         name: "{{ item }}"
         driver: local
       with_items:
-        - "{{ nginx_volume_html }}"
-        - "{{ nginx_volume_conf }}"
+        - "{{ nginx_conf_volume }}"
 
     - name: Ensure Nginx container is running
       docker_container:
@@ -36,14 +33,12 @@
         ports:
           - "8888:80"
         volumes:
-          - "{{ nginx_volume_html }}:{{ nginx_html_path }}:ro"
-          - "{{ nginx_volume_conf }}:{{ nginx_conf_path }}:ro"
+          - "{{ nginx_conf_volume }}:{{ nginx_conf_path }}:ro"
 
-    - name: Set Nginx AB Testing percentage
-      lineinfile:
-        path: "{{nginx_conf_file }}"
-        regexp: 'split_clients \$remote_addr \$appserver {'
-        line: 'split_clients \$remote_addr \$appserver { "{{ nginx_ab_test_percentage }}%" version_a; "*" version_b; }'
+    - name: Configure Nginx AB testing percentage
+      copy:
+        src: ab_testing_split_client.conf
+        dest: "{{ nginx_conf_volume }}:nginx.conf"
       notify: Restart Nginx container
 
   handlers:
