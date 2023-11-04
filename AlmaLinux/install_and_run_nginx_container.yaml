@@ -7,9 +7,9 @@
     nginx_image: nginx:latest
     nginx_container_name: nginx
     nginx_volume_path: nginx-data
-    nginx_conf_path: /etc/nginx/nginx.conf
-    nginx_html_path: /usr/share/nginx/html    
-    nginx_ab_test_path: /etc/nginx/ab_test.conf
+    nginx_conf_path: /etc/nginx/
+    nginx_conf_file: /etc/nginx/nginx.conf
+    nginx_html_path: /usr/share/nginx/html
     nginx_ab_test_percentage: 80
 
   tasks:
@@ -37,7 +37,7 @@
 
     - name: Set Nginx AB Testing percentage
       lineinfile:
-        path: "{{nginx_conf_path }}"
+        path: "{{nginx_conf_file }}"
         regexp: 'split_clients \$remote_addr \$appserver {'
         line: 'split_clients \$remote_addr \$appserver { "{{ nginx_ab_test_percentage }}%" version_a; "*" version_b; }'
       notify: Restart Nginx container
