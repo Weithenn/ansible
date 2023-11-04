@@ -1,25 +1,49 @@
 ---
-- hosts: all
+- name: Configure nginx container volume and AB Testing
+  hosts: all
   gather_facts: no
   become: yes
+  vars:
+    nginx_image: nginx:latest
+    nginx_container_name: nginx
+    nginx_volume_path: nginx-data
+    nginx_conf_path: /etc/nginx/nginx.conf
+    nginx_html_path: /usr/share/nginx/html    
+    nginx_ab_test_path: /etc/nginx/ab_test.conf
+    nginx_ab_test_percentage: 80
 
   tasks:
     - name: Pull Nginx Docker image
       docker_image:
-        name: nginx
+        name: "{{ nginx_image }}"
         source: pull
 
     - name: Create volume for Nginx
       docker_volume:
-        name: nginx-data
+        name: "{{ nginx_volume_path }}"
         driver: local
 
-    - name: Start Nginx container
+    - name: Ensure Nginx container is running
       docker_container:
-        name: nginx
-        image: nginx
+        name: "{{ nginx_container_name }}"
+        image: "{{ nginx_image }}"
         state: started
+        restart_policy: always
         ports:
           - "8888:80"
         volumes:
-          - "nginx-data:/usr/share/nginx/html:ro"
+          - "{{ nginx_volume_path }}:{{ nginx_html_path }}:ro"
+          - "{{ nginx_volume_path }}:{{ nginx_conf_path }}:ro"
+
+    - name: Set Nginx AB Testing percentage
+      lineinfile:
+        path: "{{nginx_conf_path }}"
+        regexp: 'split_clients \$remote_addr \$appserver {'
+        line: 'split_clients \$remote_addr \$appserver { "{{ nginx_ab_test_percentage }}%" version_a; "*" version_b; }'
+      notify: Restart Nginx container
+
+  handlers:
+    - name: Restart Nginx container
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        state: restarted
