@@ -31,22 +31,22 @@
       docker_container:
         name: "{{ nginx_container_name }}"
         image: "{{ nginx_image }}"
-        state: started       
+        state: present     
         ports:
           - "8888:80"
         volumes:
           - "{{ nginx_html_volume }}:{{ nginx_html_path }}:ro"
           - "{{ nginx_conf_volume }}:{{ nginx_conf_path }}:ro"
 
-  #   - name: Configure Nginx AB testing percentage
-  #     copy:
-  #       src: ab_testing_split_client.conf
-  #       dest: "{{ nginx_conf_file }}"
-  #     notify: Restart Nginx container
+    - name: Configure Nginx AB testing percentage
+      copy:
+        src: ab_testing_split_client.conf
+        dest: "{{ nginx_conf_file }}"
+      notify: Restart Nginx container
 
-  # handlers:
-  #   - name: Restart Nginx container
-  #     docker_container:
-  #       name: "{{ nginx_container_name }}"
-  #       state: started
-  #       restart_policy: always
+  handlers:
+    - name: Restart Nginx container
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        state: started
+        restart_policy: always
