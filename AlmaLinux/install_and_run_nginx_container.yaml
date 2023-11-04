@@ -61,7 +61,7 @@
     - name: Print webversion result
       debug:
         var: webversion_result.stdout_lines
-      verbosity: 2
+        verbosity: 2
 
   handlers:
     - name: Restart Nginx container
