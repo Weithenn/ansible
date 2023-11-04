@@ -28,8 +28,7 @@
       docker_container:
         name: "{{ nginx_container_name }}"
         image: "{{ nginx_image }}"
-        state: started
-        restart_policy: always
+        state: present        
         ports:
           - "8888:80"
         volumes:
@@ -38,11 +37,12 @@
     - name: Configure Nginx AB testing percentage
       copy:
         src: ab_testing_split_client.conf
-        dest: "{{ nginx_conf_volume }}:nginx.conf"
+        dest: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
       notify: Restart Nginx container
 
   handlers:
     - name: Restart Nginx container
       docker_container:
         name: "{{ nginx_container_name }}"
-        state: restarted
+        state: started
+        restart_policy: always
