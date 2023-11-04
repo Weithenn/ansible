@@ -11,7 +11,6 @@
     nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
     nginx_conf_file: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
-    nginx_ab_test_percentage: 80
 
   tasks:
     - name: Pull Nginx docker image
@@ -47,7 +46,8 @@
       replace:
         path: "{{ nginx_conf_file }}"
         regexp: '80%'
-        replace: '50%'
+#        replace: '50%'
+        replace: {{ AB_Test_Percentage }}
       notify: Restart Nginx container
 
   handlers:
