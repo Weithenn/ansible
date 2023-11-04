@@ -50,22 +50,22 @@
         replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
 
-    - name: Wait for service to be ready
-      wait_for:
-        timeout: 60
+    # - name: Wait for service to be ready
+    #   wait_for:
+    #     timeout: 60
 
-    - name: Testing the split_clients Configuration
-      shell: |
-        for x in {1..20}; 
-        do
-          curl 127.0.0.1:8888?token=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1); 
-        done
-      register: webversion_result
+    # - name: Testing the split_clients Configuration
+    #   shell: |
+    #     for x in {1..20}; 
+    #     do
+    #       curl 127.0.0.1:8888?token=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1); 
+    #     done
+    #   register: webversion_result
 
-    - name: Print webversion result
-      debug:
-        var: webversion_result.stdout_lines
-        verbosity: 2
+    # - name: Print webversion result
+    #   debug:
+    #     var: webversion_result.stdout_lines
+    #     verbosity: 2
 
   handlers:
     - name: Restart Nginx container
