@@ -8,11 +8,11 @@
     nginx_container_name: nginx
     nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
-    nginx_conf_file: /etc/nginx/nginx.conf
+    nginx_conf_file: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
     nginx_ab_test_percentage: 80
 
   tasks:
-    - name: Pull Nginx Docker image
+    - name: Pull Nginx docker image
       docker_image:
         name: "{{ nginx_image }}"
         source: pull
@@ -37,7 +37,7 @@
     - name: Configure Nginx AB testing percentage
       copy:
         src: ab_testing_split_client.conf
-        dest: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
+        dest: "{{ nginx_conf_file }}"
       notify: Restart Nginx container
 
   handlers:
