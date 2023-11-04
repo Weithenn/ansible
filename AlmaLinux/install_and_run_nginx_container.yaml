@@ -10,6 +10,7 @@
     nginx_html_path: /usr/share/nginx/html
     nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
+    nginx_src_file: ab_testing_split_client.conf
     nginx_conf_file: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
 
   tasks:
@@ -39,14 +40,13 @@
 
     - name: Configure Nginx AB testing percentage
       copy:
-        src: ab_testing_split_client.conf
+        src: "{{ nginx_src_file }}"
         dest: "{{ nginx_conf_file }}"
 
-    - name: Replace 80% with 50% in nginx.conf
+    - name: Using AB_Test_Percentage in nginx.conf
       replace:
         path: "{{ nginx_conf_file }}"
-        regexp: '80%'
-#        replace: '50%'
+        regexp: '100%'
         replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
 
