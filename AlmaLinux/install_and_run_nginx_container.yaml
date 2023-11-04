@@ -47,7 +47,7 @@
         path: "{{ nginx_conf_file }}"
         regexp: '80%'
 #        replace: '50%'
-        replace: {{ AB_Test_Percentage }}
+        replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
 
   handlers:
