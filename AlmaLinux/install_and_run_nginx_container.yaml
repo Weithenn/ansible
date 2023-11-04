@@ -6,6 +6,8 @@
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
+    nginx_html_volume: nginx-html
+    nginx_html_path: /usr/share/nginx/html
     nginx_conf_volume: nginx-conf
     nginx_conf_path: /etc/nginx/
     nginx_conf_file: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
@@ -22,6 +24,7 @@
         name: "{{ item }}"
         driver: local
       with_items:
+        - "{{ nginx_html_volume }}"
         - "{{ nginx_conf_volume }}"
 
     - name: Ensure Nginx container is running
@@ -32,6 +35,7 @@
         ports:
           - "8888:80"
         volumes:
+          - "{{ nginx_html_volume }}:{{ nginx_html_path }}:ro"
           - "{{ nginx_conf_volume }}:{{ nginx_conf_path }}:ro"
 
     - name: Configure Nginx AB testing percentage
