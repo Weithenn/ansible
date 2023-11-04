@@ -2,6 +2,7 @@
 - name: Configure Nginx container and AB Testing
   hosts: all
   gather_facts: no
+  become: yes
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
