@@ -50,13 +50,6 @@
         replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
 
-  handlers:
-    - name: Restart Nginx container
-      docker_container:
-        name: "{{ nginx_container_name }}"
-        state: started
-        restart_policy: always
-
     - name: Testing the split_clients Configuration
       shell: |
         for x in {1..20}; 
@@ -68,3 +61,10 @@
     - name: Print webversion result
       debug:
         var: webversion_result.stdout_lines
+
+  handlers:
+    - name: Restart Nginx container
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        state: started
+        restart_policy: always
