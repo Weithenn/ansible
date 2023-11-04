@@ -42,6 +42,12 @@
       copy:
         src: ab_testing_split_client.conf
         dest: "{{ nginx_conf_file }}"
+
+    - name: Replace 80% with 50% in nginx.conf
+      replace:
+        path: "{{ nginx_conf_file }}"
+        regexp: '80%'
+        replace: '50%'
       notify: Restart Nginx container
 
   handlers:
