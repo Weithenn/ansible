@@ -6,7 +6,8 @@
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
-    nginx_volume_path: nginx-data
+    nginx_volume_html: nginx-html
+    nginx_volume_conf: nginx-conf
     nginx_conf_path: /etc/nginx/
     nginx_conf_file: /etc/nginx/nginx.conf
     nginx_html_path: /usr/share/nginx/html
@@ -20,8 +21,11 @@
 
     - name: Create volume for Nginx
       docker_volume:
-        name: "{{ nginx_volume_path }}"
+        name: "{{ item }}"
         driver: local
+      with_items:
+        - "{{ nginx_volume_html }}"
+        - "{{ nginx_volume_conf }}"
 
     - name: Ensure Nginx container is running
       docker_container:
@@ -32,8 +36,8 @@
         ports:
           - "8888:80"
         volumes:
-          - "{{ nginx_volume_path }}:{{ nginx_html_path }}:ro"
-          - "{{ nginx_volume_path }}:{{ nginx_conf_path }}:ro"
+          - "{{ nginx_volume_html }}:{{ nginx_html_path }}:ro"
+          - "{{ nginx_volume_conf }}:{{ nginx_conf_path }}:ro"
 
     - name: Set Nginx AB Testing percentage
       lineinfile:
