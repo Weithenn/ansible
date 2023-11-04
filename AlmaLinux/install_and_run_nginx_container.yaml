@@ -50,6 +50,14 @@
         replace: "{{ AB_Test_Percentage }}"
       notify: Restart Nginx container
 
+    - name: Wait for service to be ready
+      wait_for:
+        port: 8888
+        host: 127.0.0.1
+        connect_timeout: 5
+        delay: 5
+        timeout: 60
+
     - name: Testing the split_clients Configuration
       shell: |
         for x in {1..20}; 
