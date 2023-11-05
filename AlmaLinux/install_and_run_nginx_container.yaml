@@ -39,7 +39,7 @@
         src: "{{ nginx_src_file }}"
         dest: "{{ nginx_conf_file }}"
 
-    - name: Using AB_Test_Percentage in nginx.conf
+    - name: Using AWX Survey for AB_Test_Percentage in nginx.conf
       replace:
         path: "{{ nginx_conf_file }}"
         regexp: '100%'
