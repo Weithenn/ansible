@@ -4,4 +4,4 @@
   tasks:
     - name: Send alert mail
       debug:
-        msg: "SSH to {{ inventory_hostname }} failed. Send Alert E-mail !!"
+        msg: "\u001b[31mSSH to {{ inventory_hostname }} failed. Send Alert E-mail !!"
