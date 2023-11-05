@@ -5,3 +5,6 @@
     - name: Send alert mail
       debug:
         msg: "\u001b[31mSSH to {{ inventory_hostname }} failed.\u001b[0m Send Alert E-mail !!"
+
+    - name: Display colored text
+      command: echo -e "\e[31mThis is red text\e[0m"
