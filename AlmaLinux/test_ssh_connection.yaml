@@ -2,7 +2,7 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: Ansible ping - try to connect to host
+    - name: Ansible Ping - try to connect to host
       ping:
       register: pong
 
