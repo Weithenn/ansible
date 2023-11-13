@@ -1,3 +1,13 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - September 5, 2023
+# IT event:       DevOpsDays Taipei 2023
+# Workshop Name:  GitOps Workshop | 自動化 / 審核 / AI for Code
+# Description:    Automation, Approval, and AI for Code for the GitOps workshop
+# ==================================================================================
+
+
+
 ---
 - hosts: all
   tasks:
