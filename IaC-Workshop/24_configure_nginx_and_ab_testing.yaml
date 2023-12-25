@@ -1,6 +1,6 @@
 ﻿---
 - name: Configure Nginx container and AB Testing
-  hosts: lnode02
+  hosts: apache
   become: true
   vars:
     nginx_image: nginx:latest
