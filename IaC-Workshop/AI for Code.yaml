@@ -1,0 +1,19 @@
+---
+- name: Hello IaC Workshop
+  hosts: lnode01
+
+  tasks:
+    - name: Print Hello Message
+      ansible.builtin.debug:
+        msg: Hello there!
+
+    - name: Install Apache
+      ansible.builtin.package:
+        name: httpd
+        state: present
+
+    - name: Disable and Stop Firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
+        enabled: false
