@@ -1,0 +1,35 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - November 5, 2023
+# IT event:       Modern Web Conference 2023
+# Workshop Name:  GitOps | 以 A/B 測試為例
+# Description:    Take A/B testing as an example for the GitOps workshop
+# ==================================================================================
+
+
+
+---
+- name: Stop and remove Nginx containers, images and volumes
+  hosts: all
+  gather_facts: no
+  become: yes
+  vars:
+    nginx_image: nginx:latest
+    nginx_container_name: nginx
+    nginx_conf_volume: nginx-conf
+
+  tasks:
+    - name: Stop and remove Nginx containers
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        state: absent
+
+    - name: Remove Nginx docker image
+      docker_image:
+        name: "{{ nginx_image }}"
+        state: absent
+
+    - name: Remove Nginx volume
+      docker_volume:
+        name: "{{ nginx_conf_volume }}"
+        state: absent
