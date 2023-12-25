@@ -1,0 +1,24 @@
+﻿---
+- name: Stop and remove Nginx containers, images and volumes
+  hosts: lnode01
+  become: true
+  vars:
+    nginx_image: nginx:latest
+    nginx_container_name: nginx
+    nginx_conf_volume: nginx-conf
+
+  tasks:
+    - name: Stop and remove Nginx containers
+      ansible.builtin.docker_container:
+        name: "{{ nginx_container_name }}"
+        state: absent
+
+    - name: Remove Nginx docker image
+      ansible.builtin.docker_image:
+        name: "{{ nginx_image }}"
+        state: absent
+
+    - name: Remove Nginx volume
+      ansible.builtin.docker_volume:
+        name: "{{ nginx_conf_volume }}"
+        state: absent
