@@ -1,0 +1,8 @@
+---
+- name: Hello IaC Workshop
+  hosts: lnode01
+
+  tasks:
+    - name: Hello Message
+      ansible.builtin.debug:
+        msg: "Hello IaC Workshop!"
