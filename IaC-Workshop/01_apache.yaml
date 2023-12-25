@@ -1,0 +1,8 @@
+---
+- name: Apache server installed
+  hosts: lnode01
+  become: true
+  tasks:
+    - name: Install Apache
+      ansible.builtin.dnf:
+        name: httpd

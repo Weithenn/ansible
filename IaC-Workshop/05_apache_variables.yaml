@@ -1,0 +1,21 @@
+---
+- name: Apache server installed
+  hosts: apache
+  become: true
+
+  tasks:
+    - name: Install Apache
+      ansible.builtin.dnf:
+        name: httpd
+
+    - name: Apache enabled and running
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: Copy index.html
+      ansible.builtin.copy:
+        src: "web_{{ stage }}.html"
+        dest: /var/www/html/index.html
+        mode: '644'

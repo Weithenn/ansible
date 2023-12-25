@@ -1,0 +1,17 @@
+ ________  ___       _____ ______   ________  ___       ___  ________   ___  ___     ___    ___      ________     
+|\   __  \|\  \     |\   _ \  _   \|\   __  \|\  \     |\  \|\   ___  \|\  \|\  \   |\  \  /  /|    |\  ___  \    
+\ \  \|\  \ \  \    \ \  \\\__\ \  \ \  \|\  \ \  \    \ \  \ \  \\ \  \ \  \\\  \  \ \  \/  / /    \ \____   \   
+ \ \   __  \ \  \    \ \  \\|__| \  \ \   __  \ \  \    \ \  \ \  \\ \  \ \  \\\  \  \ \    / /      \|____|\  \  
+  \ \  \ \  \ \  \____\ \  \    \ \  \ \  \ \  \ \  \____\ \  \ \  \\ \  \ \  \\\  \  /     \/           __\_\  \ 
+   \ \__\ \__\ \_______\ \__\    \ \__\ \__\ \__\ \_______\ \__\ \__\\ \__\ \_______\/  /\   \          |\_______\
+    \|__|\|__|\|_______|\|__|     \|__|\|__|\|__|\|_______|\|__|\|__| \|__|\|_______/__/ /\ __\         \|_______|
+                                                                                    |__|/ \|__|                   
+
+Hostname / FQDN:  {{ ansible_hostname }} / {{ ansible_fqdn }}
+IP Address     :  {{ ansible_eth0.ipv4.address }}
+OS version     :  {{ ansible_distribution }} {{ ansible_distribution_version}}
+Kernel         :  {{ ansible_kernel }}
+Architecture   :  {{ ansible_architecture }}
+Machine type   :  {{ ansible_board_vendor }}, {{ ansible_board_version }}
+CPUs           :  {{ ansible_processor_vcpus }}
+Memory         :  {{ (ansible_memtotal_mb / 1000) | round(1) }}GB

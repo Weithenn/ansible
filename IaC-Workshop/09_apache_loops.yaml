@@ -1,0 +1,31 @@
+---
+- name: Install some tools
+  hosts: apache
+  become: true
+
+  tasks:
+    - name: Install some tools
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+      loop:
+        - net-tools
+        - bind-utils
+        - bash-completion
+        - tree
+      register: install_result
+
+    - name: Print install result
+      ansible.builtin.debug:
+        var: install_result
+      #   msg:
+      #     - "{{ install_result.results[0].item }}"
+      #     - "{{ install_result.results[0].results }}"
+      #     - "{{ install_result.results[1].item }}"
+      #     - "{{ install_result.results[1].results }}"
+      #     - "{{ install_result.results[2].item }}"
+      #     - "{{ install_result.results[2].results }}"
+      #     - "{{ install_result.results[3].item }}"
+      #     - "{{ install_result.results[3].results }}"
+      #     - "{{ install_result.results[item].item }}"
+      #     - "{{ install_result.results[item].results }}"
+      # loop: [0, 1, 2, 3]

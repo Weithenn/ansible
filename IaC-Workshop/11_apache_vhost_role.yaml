@@ -1,0 +1,14 @@
+---
+- name: Use apache_vhost role playbook
+  hosts: apache
+  become: true
+  pre_tasks:
+    - name: Pre tasks
+      ansible.builtin.debug:
+        msg: 'Beginning web server configuration.'
+  roles:
+    - apache_vhost
+  post_tasks:
+    - name: Post tasks
+      ansible.builtin.debug:
+        msg: 'Web server has been configured.'

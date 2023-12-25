@@ -1,0 +1,28 @@
+---
+- name: Install httpd
+  ansible.builtin.dnf:
+    name: httpd
+- name: Start and enable httpd service
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true
+- name: Ensure vhost directory is present
+  ansible.builtin.file:
+    path: "/var/www/vhosts/{{ ansible_hostname }}"
+    state: directory
+    mode: '0755'
+- name: Copyy html content
+  ansible.builtin.copy:
+    src: web.html
+    dest: "/var/www/vhosts/{{ ansible_hostname }}/index.html"
+    mode: '0644'
+- name: Template vhost file
+  ansible.builtin.template:
+    src: vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart Apache

@@ -1,0 +1,11 @@
+---
+ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+      - /home/iac-admin/iac-labs/inventory/hosts
+  playbook-artifact:
+    save-as: /home/iac-admin/iac-labs/logs/{playbook_name}.json
+  color:
+    enable: true
+    osc4: true

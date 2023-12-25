@@ -1,0 +1,16 @@
+---
+- name: Apache server installed
+  hosts: apache
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Install apache2
+      when: ansible_distribution == "Debian | Ubuntu"
+      ansible.builtin.apt:
+        name: apache2
+
+    - name: Install httpd
+      when: ansible_distribution == "AlmaLinux"
+      ansible.builtin.dnf:
+        name: httpd
