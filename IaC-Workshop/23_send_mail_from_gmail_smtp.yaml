@@ -11,7 +11,7 @@
 
   tasks:
     - name: Sending an e-mail using Gmail SMTP servers
-      community.general.mail:
+      ansible.builtin.mail:
         host: "{{ gmail.smtp_server }}"
         port: '587'
         username: "{{ gmail.username }}"
