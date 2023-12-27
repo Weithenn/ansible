@@ -1,6 +1,6 @@
 ---
 - name: Test SSH Connection
-  hosts: lnode01
+  hosts: all
 
   tasks:
     - name: Ansible Ping - try to connect to host test
