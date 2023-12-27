@@ -6,7 +6,7 @@
     gmail:
       smtp_server: "smtp.gmail.com"
       username: "{{ Gmail_username }}"
-      password: "{{ Gmail_password}}"
+      password: "{{ Gmail_password }}"
       address: "{{ Gmail_address }}"
 
   tasks:
@@ -17,8 +17,8 @@
         username: "{{ gmail.username }}"
         password: "{{ gmail.password }}"
         to: "{{ gmail.address }}"
-        subject: Can't not SSH to "{{ inventory_hostname }}"
-        body: Can't not SSH to "{{ inventory_hostname }}"
+        subject: Can't SSH to "{{ inventory_hostname }}"
+        body: Can't SSH to "{{ inventory_hostname }}"
       register: sending_email
 
     - name: Print sending an e-mail result
