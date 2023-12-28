@@ -1,2 +1,2 @@
 [apache]
-lnode03 ansible_host=10.10.75.13
+lnode01 ansible_host=10.10.75.11
