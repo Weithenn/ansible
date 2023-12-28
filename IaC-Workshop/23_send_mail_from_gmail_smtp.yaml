@@ -1,6 +1,6 @@
 ﻿---
 - name: Send mail from Gamil SMTP
-  hosts: lnode01
+  hosts: all
   connection: local
   vars:
     gmail:

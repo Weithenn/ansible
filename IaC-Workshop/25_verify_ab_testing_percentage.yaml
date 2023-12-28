@@ -1,6 +1,6 @@
 ﻿---
 - name: Verify AB Testing percentage
-  hosts: lnode01
+  hosts: all
   become: true
 
   tasks:
