@@ -1,0 +1,7 @@
+---
+- name: say thanks
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - debug:
+        msg: "Thank you for attending DevOpsDays Taipei 2024!"
