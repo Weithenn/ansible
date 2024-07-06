@@ -1,0 +1,18 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - November 5, 2023
+# IT event:       Modern Web Conference 2023
+# Workshop Name:  GitOps | 以 A/B 測試為例
+# Description:    Take A/B testing as an example for the GitOps workshop
+# ==================================================================================
+
+
+
+---
+- name: Send alert mail
+  hosts: all
+
+  tasks:
+    - name: Send alert mail
+      debug:
+        msg: "SSH to {{ inventory_hostname }} failed. Send Alert E-mail !!"

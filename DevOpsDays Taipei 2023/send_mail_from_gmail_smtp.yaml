@@ -1,0 +1,36 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - September 5, 2023
+# IT event:       DevOpsDays Taipei 2023
+# Workshop Name:  GitOps Workshop | 自動化 / 審核 / AI for Code
+# Description:    Automation, Approval, and AI for Code for the GitOps workshop
+# ==================================================================================
+
+
+
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    gmail:
+      smtp_server: "smtp.gmail.com"
+      username: "{{ Gmail_username }}"
+      password: "{{ Gmail_password}}"
+      address: "{{ Gmail_address }}"
+
+  tasks:
+    - name: Sending an e-mail using Gmail SMTP servers
+      mail:
+        host: "{{ gmail.smtp_server }}"
+        port: 587
+        username: "{{ gmail.username }}"
+        password: "{{ gmail.password }}"
+        to: "{{ gmail.address }}"
+        subject: Can't not SSH to "{{ inventory_hostname }}"
+        body: Can't not SSH to "{{ inventory_hostname }}"
+      register: sending_email
+
+    - name: Print sending an e-mail result
+      debug:
+        var: sending_email

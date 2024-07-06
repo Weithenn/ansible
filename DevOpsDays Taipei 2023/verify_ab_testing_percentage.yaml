@@ -1,0 +1,27 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - November 5, 2023
+# IT event:       Modern Web Conference 2023
+# Workshop Name:  GitOps | 以 A/B 測試為例
+# Description:    Take A/B testing as an example for the GitOps workshop
+# ==================================================================================
+
+
+
+---
+- name: Verify AB Testing percentage
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Testing the split_clients Configuration
+      shell: |
+        for x in {1..20}; 
+        do
+          curl 127.0.0.1:8888?token=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1); 
+        done
+      register: webversion_result
+
+    - name: Print webversion result
+      debug:
+        var: webversion_result.stdout_lines

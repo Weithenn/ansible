@@ -1,0 +1,64 @@
+﻿# ==================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.5 - November 5, 2023
+# IT event:       Modern Web Conference 2023
+# Workshop Name:  GitOps | 以 A/B 測試為例
+# Description:    Take A/B testing as an example for the GitOps workshop
+# ==================================================================================
+
+
+
+---
+- name: Configure Nginx container and AB Testing
+  hosts: all
+  gather_facts: no
+  become: yes
+  vars:
+    nginx_image: nginx:latest
+    nginx_container_name: nginx
+    nginx_conf_volume: nginx-conf
+    nginx_conf_path: /etc/nginx/
+    nginx_src_file: ab_testing_split_client.conf
+    nginx_conf_file: /var/lib/docker/volumes/nginx-conf/_data/nginx.conf
+
+  tasks:
+    - name: Pull Nginx docker image
+      docker_image:
+        name: "{{ nginx_image }}"
+        source: pull
+
+    - name: Create volume for Nginx
+      docker_volume:
+        name: "{{ item }}"
+        driver: local
+      with_items:
+        - "{{ nginx_conf_volume }}"
+
+    - name: Ensure Nginx container is running
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        image: "{{ nginx_image }}"
+        state: present     
+        ports:
+          - "8888:80"
+        volumes:
+          - "{{ nginx_conf_volume }}:{{ nginx_conf_path }}:ro"
+
+    - name: Configure Nginx AB testing percentage
+      copy:
+        src: "{{ nginx_src_file }}"
+        dest: "{{ nginx_conf_file }}"
+
+    - name: Using AWX Survey for AB_Test_Percentage in nginx.conf
+      replace:
+        path: "{{ nginx_conf_file }}"
+        regexp: '100%'
+        replace: "{{ AB_Test_Percentage }}"
+      notify: Restart Nginx container
+
+  handlers:
+    - name: Restart Nginx container
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        state: started
+        restart_policy: always
