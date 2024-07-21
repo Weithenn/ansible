@@ -1,0 +1,53 @@
+---
+- name: Create a VPC network and GKE Cluster
+  hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    zone: "us-central1-c"
+    region: "us-centeral1"
+    project_id: "{{ lookup('env','GCE_PROJECT') }}"
+    gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
+    cluster_name: "gketest03"
+    initial_node_count: 1
+    disk_size_gb: 100
+    disk_type: "pd-ssd"
+    machine_type: "e2-medium"
+
+  tasks:
+    - name: Create a VPC network
+      google.cloud.gcp_compute_network:
+        name: vpc-{{cluster_name}}
+        auto_create_subnetworks: 'true'
+        project: "{{project_id}}"
+        auth_kind: serviceaccount
+        service_account_file: "{{gcp_service_account}}"
+        state: present
+      register: vpc-network
+
+    - name: Create a GKE cluster
+      google.cloud.gcp_container_cluster:
+        name: "{{ cluster_name }}"
+        initial_node_count: "{{ initial_node_count }}"
+        location: "{{ zone }}"
+        network: "{{ vpc-network.name }}"
+        project: "{{ project_id }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account }}"
+        state: present
+      register: cluster
+
+    - name: create a node pool
+      google.cloud.gcp_container_node_pool:
+        name: my-pool-{{ cluster_name }}
+        initial_node_count: "{{ initial_node_count }}"
+        cluster: "{{ cluster }}"
+        config:
+          disk_size_gb: "{{ disk_size_gb }}"
+          disk_type: "{{ disk_type }}"
+          machine_type: "{{ machine_type }}"
+        location: "{{ zone }}"
+        project: "{{ project_id }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account }}"
+        state: present
