@@ -45,10 +45,10 @@
           kind: Service
           metadata:
             name: nginx-service
-            namespace: default
+            namespace: "{{ namespace }}"
           spec:
             selector:
-              app: nginx
+              app: "{{ app }}"
             ports:
             - protocol: TCP
               port: 80
