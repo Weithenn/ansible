@@ -17,9 +17,9 @@
   tasks:
     - name: Create a VPC network
       google.cloud.gcp_compute_network:
-        name: vpc-{{cluster_name}}
+        name: vpc-{{ cluster_name }}
         auto_create_subnetworks: 'true'
-        project: "{{project_id}}"
+        project: "{{ project_id }}"
         auth_kind: serviceaccount
         service_account_file: "{{gcp_service_account}}"
         state: present
