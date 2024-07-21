@@ -7,10 +7,8 @@
   vars:
     zone: "us-central1-c"
     region: "us-centeral1"
-    project_id: "gitops-gke-429911"
-#    gcloud_sa_path: "./gcpserviceaccount.json"
-    gcloud_service_account: "gke-service@gitops-gke-429911.iam.gserviceaccount.com"
-#    credential: "{{lookup('env','HOME') }}/{{gcloud_sa_path}}"
+    project_id: "{{ lookup('env','GCE_PROJECT') }}"
+    gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
     cluster_name: "gketest02"
     initial_node_count: 1
     disk_size_gb: 100
@@ -24,7 +22,7 @@
         auto_create_subnetworks: 'true'
         project: "{{project_id}}"
         auth_kind: serviceaccount
-        service_account_file: "{{credential}}"
+        service_account_file: "{{gcp_service_account}}"
         state: present
       register: network
 
@@ -36,7 +34,7 @@
         network: "{{ network.name }}"
         project: "{{ project_id }}"
         auth_kind: serviceaccount
-        service_account_file: "{{ credential }}"
+        service_account_file: "{{ gcp_service_account }}"
         state: present
       register: cluster
 
@@ -52,5 +50,5 @@
         location: "{{ zone }}"
         project: "{{ project_id }}"
         auth_kind: serviceaccount
-        service_account_file: "{{ credential }}"
+        service_account_file: "{{ gcp_service_account }}"
         state: present
