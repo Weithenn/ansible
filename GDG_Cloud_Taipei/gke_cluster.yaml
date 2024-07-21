@@ -8,9 +8,9 @@
     zone: "us-central1-c"
     region: "us-centeral1"
     project_id: "gitops-gke-429911"
-    gcloud_sa_path: "./gcpserviceaccount.json"
+#    gcloud_sa_path: "./gcpserviceaccount.json"
     gcloud_service_account: "gke-service@gitops-gke-429911.iam.gserviceaccount.com"
-    credential: "{{lookup('env','HOME') }}/{{gcloud_sa_path}}"
+#    credential: "{{lookup('env','HOME') }}/{{gcloud_sa_path}}"
     cluster_name: "gketest02"
     initial_node_count: 1
     disk_size_gb: 100
