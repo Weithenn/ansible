@@ -1,0 +1,24 @@
+---
+- name: Listen for events on a webhook
+  hosts: all
+  
+  # Define our source for events
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+  
+  # Define the conditions we are looking for
+  rules:
+    - name: Which IT seminar are you attending?
+      condition: event.payload.message == "DevOpsDays"
+      
+      # Define the action we should take should the condition be met
+      action:
+        debug:
+          msg: "You are right. {{ event.payload.message }} Taipei 2024. Good Job!"
+
+
+### Execute the following command in EDA terminal to test ###
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"Cloud Summit\"}" eda.lab.weithenn.org/endpoint
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"DevOpsDays\"}" eda.lab.weithenn.org/endpoint

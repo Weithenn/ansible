@@ -1,0 +1,60 @@
+---
+- name: pull_request -- update application repo
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+  - name: pull_request -- Check if repo exists locally
+    ansible.builtin.stat:
+      path: "/tmp/{{ ansible_eda.event.repo_name }}"
+    register: repo_stat
+
+  - name: pull_request -- Clone application repository
+    ansible.builtin.git:
+      repo: "{{ ansible_eda.event.clone_url }}"
+      dest: "/tmp/{{ ansible_eda.event.repo_name }}"
+      clone: true
+      update: true
+    when: repo_stat.stat.exists == false
+    register: repo_cloned
+
+  - name: pull_request -- Update application repository to event ref
+    ansible.builtin.git:
+      repo: "{{ ansible_eda.event.clone_url }}"
+      dest: "/tmp/{{ ansible_eda.event.repo_name }}"
+      clone: true
+      update: true
+      version: "{{ ansible_eda.event.gitref }}"
+    register: repo_cloned
+
+  - name: pull_request -- Comment on PR
+    ansible.builtin.uri:
+      url: http://gitea.lab.weithenn.org:3000/api/v1/repos/{{ ansible_eda.event.author }}/{{ ansible_eda.event.repo_name }}/issues/{{ ansible_eda.event.pr_id }}/comments
+      user: dragon
+      password: EDAWorkshop@2024
+      method: POST
+      headers:
+        Sudo: ansible
+        Content-Type: application/json
+        accept: application/json
+      body:
+        body: |
+          Calling application deployment
+
+          Event type: {{ ansible_eda.event.type }}
+          Branch: {{ ansible_eda.event.gitref }}
+          Author: {{ ansible_eda.event.author }}
+      force_basic_auth: yes
+      status_code: 201
+      body_format: json
+    register: comment
+
+  - set_fact:
+      cacheable: true
+      repo_stat: "{{ repo_stat }}"
+      cloned: "{{ repo_cloned }}"
+      etype: "{{ ansible_eda.event.type }}"
+      erepo: "{{ ansible_eda.event.repo_name }}"
+      eref: "{{ ansible_eda.event.gitref }}"
+      eauthor: "{{ ansible_eda.event.author }}"
+      comment: "{{ comment }}"

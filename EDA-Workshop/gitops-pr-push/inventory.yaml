@@ -1,0 +1,11 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+  children:
+    appnodes:
+      hosts:
+        eda:
+          ansible_password: EDAWorkshop@2024
+          ansible_user: root
+    ungrouped: {}

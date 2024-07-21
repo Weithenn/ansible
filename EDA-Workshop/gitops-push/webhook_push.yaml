@@ -1,0 +1,45 @@
+---
+- name: Capture POSTs from gitea
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+      filters:
+        - ansible.eda.json_filter:
+            exclude_keys: ['sender', 'owner']
+        - ansible.eda.dashes_to_underscores:
+
+  rules:
+  # Capture push events on main
+    - name: Get push event details
+      condition: event.meta.headers.X_Gitea_Event == "push"
+      action:
+        post_event:
+          event:
+            type: "{{ event.meta.headers.X_Gitea_Event }}"
+            gitref: "{{ event.payload.ref }}"
+            repo_name: "{{ event.payload.repository.name }}"
+            author: "{{ event.payload.head_commit.author.username }}"
+            clone_url: "{{ event.payload.repository.clone_url }}"
+
+  # Run action in response to push events
+    - name: Respond to push event
+      condition: event.repo_name == "eda-app" and event.type == "push"
+      action:
+        run_playbook:
+          name: playbooks/on_push.yaml
+          post_events: true
+
+  # Deploy application after push/pull_request events
+    - name: Run application deploy playbook
+      condition: event.cloned.failed == false
+      action:
+        run_playbook:
+          name: /tmp/eda-app/deploy.yml
+
+
+
+### Execute the following command for modify deploy.yml ###
+# cd /home/dragon/EDA-Workshop/gitops-push
+# sudo ansible-rulebook --rulebook webhook_push.yaml -i inventory.yaml --print-events

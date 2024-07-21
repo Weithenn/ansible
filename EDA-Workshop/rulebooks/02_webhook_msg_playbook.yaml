@@ -6,7 +6,7 @@
   sources:
     - ansible.eda.webhook:
         host: 0.0.0.0
-        port: 5000
+        port: 6000
   
   # Define the conditions we are looking for
   rules:
@@ -14,8 +14,9 @@
       condition: event.payload.message == "DevOpsDays"      
       # Define the action we should take should the condition be met
       action:
-        run_playbook:
-          name: 02_say-thanks.yaml
+        run_job_template:
+          name: "Playbook - Say Thanks"
+          organization: Default
     - name: Really?
       condition: event.payload.message != "DevOpsDays"
       action:
@@ -23,7 +24,6 @@
           msg: "Really? {{ event.payload.message }}. Would you like to reconsider?"
 
 
-### Execute the following command in different terminal to test ###
-# sudo ansible-rulebook --rulebook 02_webhook.yaml -i inventory --print-events
-# curl -H 'Content-Type: application/json' -d "{\"message\": \"Cloud Summit\"}" 127.0.0.1:5000/endpoint
-# curl -H 'Content-Type: application/json' -d "{\"message\": \"DevOpsDays\"}" 127.0.0.1:5000/endpoint
+### Execute the following command in EDA terminal to test ###
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"Cloud Summit\"}" eda.lab.weithenn.org/endpoint
+# curl -H 'Content-Type: application/json' -d "{\"message\": \"DevOpsDays\"}" eda.lab.weithenn.org/endpoint

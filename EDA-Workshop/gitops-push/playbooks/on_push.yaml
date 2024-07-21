@@ -1,0 +1,37 @@
+---
+- name: push -- update application repo
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+  - name: push -- Check if repo exists locally
+    ansible.builtin.stat:
+      path: "/tmp/{{ ansible_eda.event.repo_name }}"
+    register: repo_stat
+
+  - name: push -- Clone application repository
+    ansible.builtin.git:
+      repo: "{{ ansible_eda.event.clone_url }}"
+      dest: "/tmp/{{ ansible_eda.event.repo_name }}"
+      clone: true
+      update: true
+    when: repo_stat.stat.exists == false
+    register: repo_cloned
+
+  - name: push -- Update application repository to event ref
+    ansible.builtin.git:
+      repo: "{{ ansible_eda.event.clone_url }}"
+      dest: "/tmp/{{ ansible_eda.event.repo_name }}"
+      clone: true
+      update: true
+      version: "{{ ansible_eda.event.gitref | split('/') | last }}"
+    register: repo_cloned
+
+  - set_fact:
+      cacheable: true
+      repo_stat: "{{ repo_stat }}"
+      cloned: "{{ repo_cloned }}"
+      etype: "{{ ansible_eda.event.type }}"
+      erepo: "{{ ansible_eda.event.repo_name }}"
+      eref: "{{ ansible_eda.event.gitref | split('/') | last }}"
+      eauthor: "{{ ansible_eda.event.author }}"
