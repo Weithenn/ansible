@@ -1,0 +1,19 @@
+---
+- name: Create a VPC network and GKE Cluster
+  hosts: all
+  gather_facts: no
+  connection: local
+  vars:
+    cluster_name: "gketest03"
+    project_id: "{{ lookup('env','GCE_PROJECT') }}"
+    gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
+
+  tasks:
+    - name: destroy GCP network
+      google.cloud.gcp_compute_network:
+        name: vpc-{{ cluster_name }}
+        auto_create_subnetworks: 'true'
+        project: "{{ project_id }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account }}"
+        state: absent
