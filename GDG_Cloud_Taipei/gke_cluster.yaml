@@ -1,5 +1,5 @@
 ---
-- name: create cluster
+- name: Create a GKE Cluster
   hosts: all
   gather_facts: no
   become: yes
