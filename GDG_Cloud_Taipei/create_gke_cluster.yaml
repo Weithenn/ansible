@@ -23,14 +23,14 @@
         auth_kind: serviceaccount
         service_account_file: "{{gcp_service_account}}"
         state: present
-      register: vpc-network
+      register: vpcnetwork
 
     - name: Create a GKE cluster
       google.cloud.gcp_container_cluster:
         name: "{{ cluster_name }}"
         initial_node_count: "{{ initial_node_count }}"
         location: "{{ zone }}"
-        network: "{{ vpc-network.name }}"
+        network: "{{ vpcnetwork.name }}"
         project: "{{ project_id }}"
         auth_kind: serviceaccount
         service_account_file: "{{ gcp_service_account }}"
