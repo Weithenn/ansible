@@ -36,3 +36,21 @@
               - name: "{{ app }}"
                 image: "{{ image }}"
                 imagePullPolicy: Always
+
+    - name: Expose nginx
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-service
+            namespace: default
+          spec:
+            selector:
+              app: nginx
+            ports:
+            - protocol: TCP
+              port: 80
+              targetPort: 8080
+            type: LoadBalancer
