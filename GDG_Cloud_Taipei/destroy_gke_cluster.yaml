@@ -4,15 +4,14 @@
   gather_facts: no
   connection: local
   vars:
-    cluster_name: "gketest03"
     zone: "us-central1-c"
     project_id: "{{ lookup('env','GCE_PROJECT') }}"
     gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
 
   tasks:
-    - name: Destroy GKE Cluster
+    - name: Destroy GKE Cluster (using AWX survey for GKE Cluster)
       google.cloud.gcp_container_cluster:
-        name: "{{ cluster_name }}"
+        name: "{{ GKE_CLUSTER }}"
         location: "{{ zone }}"
         project: "{{ project_id }}"
         auth_kind: serviceaccount

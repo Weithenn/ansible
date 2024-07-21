@@ -4,14 +4,13 @@
   gather_facts: no
   connection: local
   vars:
-    cluster_name: "gketest03"
     project_id: "{{ lookup('env','GCE_PROJECT') }}"
     gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
 
   tasks:
-    - name: Destroy Google Cloud VPC networks
+    - name: Destroy Google Cloud VPC networks (using AWX survey for VPC networks)
       google.cloud.gcp_compute_network:
-        name: vpc-{{ cluster_name }}
+        name: "{{ VPC_Networks }}"
         auto_create_subnetworks: 'true'
         project: "{{ project_id }}"
         auth_kind: serviceaccount
