@@ -8,7 +8,7 @@
     region: "us-centeral1"
     project_id: "{{ lookup('env','GCE_PROJECT') }}"
     gcp_service_account: "{{ lookup('env','GCE_CREDENTIALS_FILE_PATH') }}"
-    cluster_name: "gketest03"
+    cluster_name: "gketest05"
     initial_node_count: 1
     disk_size_gb: 100
     disk_type: "pd-ssd"
