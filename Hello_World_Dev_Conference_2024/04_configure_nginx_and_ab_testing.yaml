@@ -13,7 +13,6 @@
   hosts: all
   gather_facts: no
   become: yes
-  become_method: sudo
   vars:
     nginx_image: nginx:latest
     nginx_container_name: nginx
