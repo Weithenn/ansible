@@ -1,0 +1,6 @@
+- name: Hello GitOps Workshop
+  hosts: all
+  tasks:
+    - name: Hello Message
+      debug:
+        msg: "Hello SRE Conference 2024 - Workshop - GitOps Demo"
