@@ -9,8 +9,7 @@
 
 
 ---
-- name: Hello GitOps Workshop
-  hosts: all
+- hosts: all
   gather_facts: no
   connection: local
   vars:
@@ -22,7 +21,7 @@
 
   tasks:
     - name: Sending an e-mail using Gmail SMTP servers
-      mail:
+      community.general.mail:
         host: "{{ gmail.smtp_server }}"
         port: 587
         username: "{{ gmail.username }}"
