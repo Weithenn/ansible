@@ -23,19 +23,19 @@
 
   tasks:
     - name: Pull Nginx docker image
-      docker_image:
+      community.docker.docker_image:
         name: "{{ nginx_image }}"
         source: pull
 
     - name: Create volume for Nginx
-      docker_volume:
+      community.docker.docker_volume:
         name: "{{ item }}"
         driver: local
       with_items:
         - "{{ nginx_conf_volume }}"
 
     - name: Ensure Nginx container is running
-      docker_container:
+      community.docker.docker_container:
         name: "{{ nginx_container_name }}"
         image: "{{ nginx_image }}"
         state: present     
@@ -58,7 +58,7 @@
 
   handlers:
     - name: Restart Nginx container
-      docker_container:
+      community.docker.docker_container:
         name: "{{ nginx_container_name }}"
         state: started
         restart_policy: always
