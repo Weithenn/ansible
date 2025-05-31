@@ -1,0 +1,23 @@
+---
+- name: Provision System Software
+  hosts: Windows_Servers
+
+  vars_files:
+   - app_list.yml
+
+  tasks:
+
+   - name: Install specific versions of packages sequentially
+     chocolatey.chocolatey.win_chocolatey:
+      name: "{{ item.name }}"
+      version: "{{ item.version }}"
+      force: yes
+     loop: "{{ choco_packages }}"
+
+   - name: Check python version
+     ansible.windows.win_command: python --version
+     register: check_python_version
+
+   - name: Print version
+     ansible.builtin.debug:
+      msg: "{{ check_python_version }}"

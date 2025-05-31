@@ -7,22 +7,17 @@
     - passwd.yml ## Vault file
   
   tasks:
-    # - name: Create TMM group
-    #   ansible.windows.win_group:
-    #     name: TMM
-    #     state: present
-
-    # - name: Create DevOps users
-    #   ansible.windows.win_user:
-    #     name: "{{ item }}"
-    #     password: "{{ tmm_password }}"
-    #     groups: TMM
-    #     state: present
-    #   loop:
-    #    - Sean
-    #    - Colin
-    #    - Anshul
-    #    - Hicham
-    #    - Leo
-    #    - Roger
-    #    - Nuno
+    - name: Create DevOps users
+      ansible.windows.win_user:
+        name: "{{ item }}"
+        password: "{{ tmm_password }}"
+        groups: TMM
+        state: present
+      loop:
+        - Sean
+        - Colin
+        - Anshul
+        - Hicham
+        - Leo
+        - Roger
+        - Nuno
