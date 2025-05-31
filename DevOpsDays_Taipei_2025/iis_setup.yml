@@ -1,0 +1,10 @@
+---
+- 
+  hosts: windows
+  gather_facts: true
+  collections:
+   - ansible.windows
+   - community.windows
+
+  roles:
+   - iis_config
