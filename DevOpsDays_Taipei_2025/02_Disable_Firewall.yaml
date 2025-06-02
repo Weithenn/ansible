@@ -1,0 +1,18 @@
+---
+- hosts: all 
+  gather_facts: no 
+  connection: winrm
+  vars : 
+    ansible_user: '{{ Windows_Server_Username }}' 
+    ansible_password: '{{ Windows_Server_Password }}'
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks:
+    - name: Disable firewall for Domain, Public and Private profiles
+      ansible.windows.win_firewall:
+          state: disabled
+          profiles:
+          - Domain
+          - Private
+          - Public
+      tags: disable_firewall
