@@ -1,0 +1,12 @@
+---
+- hosts: all 
+  gather_facts: no 
+  connection: winrn 
+  vars : 
+    ansible_user: '{{ Windows_Server_Username }}' 
+    ansible_password: '{{ Windows_Server_Password }}'
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks:
+    - name: Test Windows Server Connection Status
+      ansible.windows.win_ping:
