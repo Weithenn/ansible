@@ -1,0 +1,25 @@
+---
+- hosts: all 
+  gather_facts: no 
+  connection: winrm
+  vars : 
+    ansible_user: '{{ Windows_Server_Username }}' 
+    ansible_password: '{{ Windows_Server_Password }}'
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks:
+    - name: Gather Windows facts
+      ansible.windows.setup:
+
+    - name: Show all collected facts
+      debug:
+        var: ansible_facts.keys()
+
+    - name: Display Windows Server 2025 information
+      when: ansible_facts['os_name'] is search("Windows Server 2025")
+      debug:
+        msg:
+          - "Edition: {{ ansible_facts['os_name'] }}"
+          - "Version: {{ ansible_facts['distribution_version'] }}"
+          - "Hostname: {{ ansible_facts['hostname'] }}"
+          - "IPv4 Address: {{ ansible_facts['ip_addresses'] | select('search', '^[0-9]') | first }}"
