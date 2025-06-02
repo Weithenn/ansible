@@ -1,0 +1,50 @@
+---
+- hosts: all 
+  gather_facts: no 
+  connection: winrm
+  vars : 
+    ansible_user: '{{ Windows_Server_Username }}' 
+    ansible_password: '{{ Windows_Server_Password }}'
+    ansible_winrm_server_cert_validation: ignore
+    windows_username: "{{ WINDOWS_USERNAME }}"   #From AWX Survey
+    windows_password: "{{ WINDOWS_PASSWORD }}"   #From AWX Survey
+
+  tasks:
+    - name: Check if user exists
+      ansible.windows.win_user:
+        name: "{{ windows_username }}"
+        state: query
+      register: user_info
+      ignore_errors: true
+ 
+    - name: Delete existing user if present
+      when: user_info.changed is defined and user_info.changed == false
+      ansible.windows.win_user:
+        name: "{{ windows_username }}"
+        state: absent      
+
+    - name: Create user account and password never expires
+      ansible.windows.win_user:
+        name: "{{ windows_username }}"
+        password: "{{ windows_password }}"
+        state: present
+        password_never_expires: yes
+      register: user_creation
+
+    - name: Display created user
+      when: user_creation.changed
+      ansible.builtin.debug:
+        msg: "User '{{ windows_username }}' has been created successfully!"      
+
+    - name: Add user to Administrators group
+      ansible.windows.win_group_membership:
+        name: "Administrators"
+        members:
+          - "{{ windows_username }}"
+        state: present
+
+    - name: Set up Autologon
+      ansible.windows.win_auto_logon:
+        username: "{{ windows_username }}"
+        password: "{{ windows_password }}"
+        state: present
