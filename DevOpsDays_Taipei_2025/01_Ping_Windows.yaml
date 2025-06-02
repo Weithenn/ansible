@@ -1,7 +1,7 @@
 ---
 - hosts: all 
   gather_facts: no 
-  connection: winrn 
+  connection: winrm
   vars : 
     ansible_user: '{{ Windows_Server_Username }}' 
     ansible_password: '{{ Windows_Server_Password }}'
