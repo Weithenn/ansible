@@ -1,0 +1,13 @@
+---
+- hosts: all 
+  gather_facts: no 
+  connection: winrm
+  vars : 
+    ansible_user: '{{ Windows_Server_Username }}' 
+    ansible_password: '{{ Windows_Server_Password }}'
+    ansible_winrm_server_cert_validation: ignore
+
+  tasks:
+    - name: Set Windows Timezone to Asia/Taipei
+      ansible.windows.win_timezone:
+        timezone: Taipei Standard Time
