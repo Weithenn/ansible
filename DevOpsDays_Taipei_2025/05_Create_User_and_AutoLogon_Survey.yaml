@@ -48,3 +48,17 @@
         username: "{{ windows_username }}"
         password: "{{ windows_password }}"
         state: present
+
+    - name: Disable privacy settings experience on logon
+      ansible.windows.win_regedit:
+        path: "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\OOBE"
+        name: "DisablePrivacyExperience"
+        type: dword
+        data: 1
+
+    - name: Disable Server Manager auto-launch for all users
+      ansible.windows.win_regedit:
+        path: "HKLM:\\SOFTWARE\\Microsoft\\ServerManager"
+        name: "DoNotOpenServerManagerAtLogon"
+        type: dword
+        data: 1
