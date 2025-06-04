@@ -1,0 +1,8 @@
+﻿---
+- name: Send alert mail
+  hosts: all
+
+  tasks:
+    - name: Send alert mail
+      debug:
+        msg: "WinRM to {{ inventory_hostname }} failed. Send Alert E-mail !!"
