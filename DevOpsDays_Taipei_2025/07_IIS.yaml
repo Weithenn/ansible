@@ -15,7 +15,7 @@
 
     - name: Create Edge shortcut using PowerShell
       ansible.windows.win_shell: |
-        $Shortcut = "$env:USERPROFILE\Desktop\Open_IIS_Edge.lnk"
+        $Shortcut = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\Open_IIS_Edge.lnk"
         $TargetPath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
         $Arguments = "http://localhost"
         
@@ -25,7 +25,7 @@
         $ShortcutObject.Arguments = $Arguments
         $ShortcutObject.Save()
 
-    - name: Move Edge shortcut to all users' startup folders
+    - name: Copy Edge shortcut to all users' startup folders
       ansible.windows.win_shell: |
         $Users = Get-ChildItem "C:\Users"
         foreach ($User in $Users) {
