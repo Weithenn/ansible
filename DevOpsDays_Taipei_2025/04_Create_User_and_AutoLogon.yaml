@@ -1,3 +1,13 @@
+# ===============================================================================================
+# Author:         Weithenn Wang (weithenn at weithenn.org)
+# Version:        v0.1 - June 5, 2025
+# IT Event:       DevOpsDays Taipei 2025
+# Workshop Name:  GitOps - Automating WS2025 with IaC
+# Description:    How to Use the Automation Platform to Connect and Configure Windows Server 2025.
+# ================================================================================================
+
+
+
 ---
 - hosts: all 
   gather_facts: no 
